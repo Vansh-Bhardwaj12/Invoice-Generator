@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-warning text-dark">
+
+            <h3>Edit Invoice</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <label>Customer Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="customer"
+                            value="{{ invoice.customer_name }}"
+                            required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>Phone</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="phone"
+                            value="{{ invoice.phone }}"
+                            required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>Address</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="address"
+                            value="{{ invoice.address }}"
+                            required>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <table class="table table-bordered" id="productTable">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>GST %</th>
+                            <th>Total</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="productBody">
+
+                        {% for item in items %}
+
+                        <tr>
+
+                            <td>
+
+                                <input
+                                    type="text"
+                                    name="product[]"
+                                    class="form-control product"
+                                    value="{{ item.product }}"
+                                    required>
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="number"
+                                    name="quantity[]"
+                                    class="form-control qty"
+                                    value="{{ item.quantity }}"
+                                    min="1">
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="number"
+                                    name="price[]"
+                                    class="form-control price"
+                                    value="{{ item.price }}"
+                                    step="0.01">
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="number"
+                                    name="gst[]"
+                                    class="form-control gst"
+                                    value="{{ item.gst }}"
+                                    step="0.01">
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="text"
+                                    class="form-control total"
+                                    value="{{ item.total }}"
+                                    readonly>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger removeRow">
+
+                                    Remove
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    id="addRow">
+
+                    Add Product
+
+                </button>
+
+                <div class="text-end mt-4">
+
+                    <h3>
+
+                        Grand Total :
+                        ₹ <span id="grandTotal">{{ invoice.grand_total }}</span>
+
+                    </h3>
+
+                </div>
+
+                <button
+                    class="btn btn-primary btn-lg mt-3">
+
+                    Update Invoice
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function calculateTotals(){
+
+    let grandTotal = 0;
+
+    document.querySelectorAll("#productBody tr").forEach(function(row){
+
+        let qty = parseFloat(row.querySelector(".qty").value) || 0;
+
+        let price = parseFloat(row.querySelector(".price").value) || 0;
+
+        let gst = parseFloat(row.querySelector(".gst").value) || 0;
+
+        let subtotal = qty * price;
+
+        let total = subtotal + subtotal * gst / 100;
+
+        row.querySelector(".total").value = total.toFixed(2);
+
+        grandTotal += total;
+
+    });
+
+    document.getElementById("grandTotal").innerHTML =
+        grandTotal.toFixed(2);
+
+}
+
+document.addEventListener("input",function(e){
+
+    if(
+        e.target.classList.contains("qty") ||
+        e.target.classList.contains("price") ||
+        e.target.classList.contains("gst")
+    ){
+
+        calculateTotals();
+
+    }
+
+});
+
+document.getElementById("addRow").onclick=function(){
+
+    let tbody=document.getElementById("productBody");
+
+    let row=tbody.rows[0].cloneNode(true);
+
+    row.querySelector(".product").value="";
+
+    row.querySelector(".qty").value=1;
+
+    row.querySelector(".price").value=0;
+
+    row.querySelector(".gst").value=18;
+
+    row.querySelector(".total").value=0;
+
+    tbody.appendChild(row);
+
+};
+
+document.addEventListener("click",function(e){
+
+    if(e.target.classList.contains("removeRow")){
+
+        let tbody=document.getElementById("productBody");
+
+        if(tbody.rows.length>1){
+
+            e.target.closest("tr").remove();
+
+            calculateTotals();
+
+        }
+
+    }
+
+});
+
+calculateTotals();
+
+</script>
+
+{% endblock %}

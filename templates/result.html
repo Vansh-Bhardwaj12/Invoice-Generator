@@ -1,0 +1,570 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+<div class="row">
+
+<!-- ========================= -->
+<!-- RESULT FORM -->
+<!-- ========================= -->
+
+<div class="col-lg-7">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h3>
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+Student Result Generator
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<form action="{{ url_for('add_result') }}" method="POST">
+
+<div class="row">
+
+<div class="col-md-4">
+
+<label class="form-label">
+
+Student Name
+
+</label>
+
+<input
+type="text"
+name="student"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-4">
+
+<label class="form-label">
+
+Roll Number
+
+</label>
+
+<input
+type="text"
+name="roll"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-4">
+
+<label class="form-label">
+
+Class
+
+</label>
+
+<input
+type="text"
+name="student_class"
+class="form-control"
+required>
+
+</div>
+
+</div>
+
+<hr>
+
+<h4 class="mb-3">
+
+Subject Details
+
+</h4>
+
+<table class="table table-bordered">
+
+<thead class="table-dark">
+
+<tr>
+
+<th width="45%">
+
+Subject
+
+</th>
+
+<th width="25%">
+
+Marks
+
+</th>
+
+<th width="20%">
+
+Action
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody id="subjectBody">
+
+<tr>
+
+<td>
+
+<input
+type="text"
+name="subject[]"
+class="form-control subject"
+placeholder="Subject Name"
+required>
+
+</td>
+
+<td>
+
+<input
+type="number"
+name="marks[]"
+class="form-control marks"
+min="0"
+max="100"
+required>
+
+</td>
+
+<td>
+
+<button
+type="button"
+class="btn btn-danger removeRow">
+
+Remove
+
+</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<button
+type="button"
+id="addRow"
+class="btn btn-success">
+
+<i class="fa fa-plus"></i>
+
+Add Subject
+
+</button>
+
+<hr>
+<div class="row mt-4">
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+
+            Total Marks
+
+        </label>
+
+        <input
+            type="text"
+            id="totalMarks"
+            class="form-control"
+            readonly>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+
+            Percentage
+
+        </label>
+
+        <input
+            type="text"
+            id="percentage"
+            class="form-control"
+            readonly>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+
+            Grade
+
+        </label>
+
+        <input
+            type="text"
+            id="grade"
+            class="form-control"
+            readonly>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+
+            Status
+
+        </label>
+
+        <input
+            type="text"
+            id="status"
+            class="form-control"
+            readonly>
+
+    </div>
+
+</div>
+
+<div class="mt-4">
+
+    <button
+        type="submit"
+        class="btn btn-primary btn-lg w-100">
+
+        <i class="fa-solid fa-floppy-disk"></i>
+
+        Generate Result
+
+    </button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function calculateResult(){
+
+    let total = 0;
+
+    let count = 0;
+
+    document.querySelectorAll(".marks").forEach(function(input){
+
+        let marks = parseFloat(input.value);
+
+        if(!isNaN(marks)){
+
+            total += marks;
+
+            count++;
+
+        }
+
+    });
+
+    let percentage = 0;
+
+    if(count > 0){
+
+        percentage = total / count;
+
+    }
+
+    document.getElementById("totalMarks").value =
+        total.toFixed(2);
+
+    document.getElementById("percentage").value =
+        percentage.toFixed(2) + "%";
+
+    let grade = "";
+
+    let status = "";
+
+    if(percentage >= 90){
+
+        grade = "A+";
+        status = "Pass";
+
+    }
+
+    else if(percentage >= 80){
+
+        grade = "A";
+        status = "Pass";
+
+    }
+
+    else if(percentage >= 70){
+
+        grade = "B";
+        status = "Pass";
+
+    }
+
+    else if(percentage >= 60){
+
+        grade = "C";
+        status = "Pass";
+
+    }
+
+    else if(percentage >= 40){
+
+        grade = "D";
+        status = "Pass";
+
+    }
+
+    else{
+
+        grade = "F";
+        status = "Fail";
+
+    }
+
+    document.getElementById("grade").value = grade;
+
+    document.getElementById("status").value = status;
+
+}
+
+document.addEventListener("input", function(e){
+
+    if(e.target.classList.contains("marks")){
+
+        calculateResult();
+
+    }
+
+});
+
+document.getElementById("addRow").addEventListener("click", function(){
+
+    let tbody = document.getElementById("subjectBody");
+
+    let row = tbody.rows[0].cloneNode(true);
+
+    row.querySelector(".subject").value = "";
+
+    row.querySelector(".marks").value = "";
+
+    tbody.appendChild(row);
+
+});
+
+document.addEventListener("click", function(e){
+
+    if(e.target.classList.contains("removeRow")){
+
+        let tbody = document.getElementById("subjectBody");
+
+        if(tbody.rows.length > 1){
+
+            e.target.closest("tr").remove();
+
+            calculateResult();
+
+        }
+
+    }
+
+});
+
+calculateResult();
+
+</script>
+<!-- ========================= -->
+<!-- RESULT LIST -->
+<!-- ========================= -->
+
+<div class="col-lg-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>
+
+                <i class="fa-solid fa-list"></i>
+
+                Student Results
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="GET" action="{{ url_for('result') }}">
+
+                <div class="input-group mb-3">
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control"
+                        placeholder="Search Student..."
+                        value="{{ search }}">
+
+                    <button
+                        class="btn btn-primary">
+
+                        Search
+
+                    </button>
+
+                </div>
+
+            </form>
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Student</th>
+
+                        <th>Roll</th>
+
+                        <th>%</th>
+
+                        <th>Grade</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for result in results %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ result.id }}
+
+                        </td>
+
+                        <td>
+
+                            {{ result.student_name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ result.roll_number }}
+
+                        </td>
+
+                        <td>
+
+                            {{ "%.2f"|format(result.percentage) }}%
+
+                        </td>
+
+                        <td>
+
+                            {{ result.grade }}
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{{ url_for('edit_result', id=result.id) }}"
+                                class="btn btn-warning btn-sm">
+
+                                Edit
+
+                            </a>
+
+                            <a
+                                href="{{ url_for('result_pdf', id=result.id) }}"
+                                class="btn btn-success btn-sm">
+
+                                PDF
+
+                            </a>
+
+                            <a
+                                href="{{ url_for('print_result', id=result.id) }}"
+                                class="btn btn-info btn-sm">
+
+                                Print
+
+                            </a>
+
+                            <a
+                                href="{{ url_for('delete_result', id=result.id) }}"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('Delete this result?')">
+
+                                Delete
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="6" class="text-center">
+
+                            No Results Found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

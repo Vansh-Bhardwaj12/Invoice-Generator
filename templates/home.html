@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+<div class="row align-items-center mt-5">
+
+<div class="col-lg-6">
+
+<h1 class="display-4 fw-bold">
+
+Invoice & Result Report Generator
+
+</h1>
+
+<p class="lead mt-4">
+
+Generate professional invoices and academic
+result reports within seconds.
+
+Automatic calculations.
+
+SQLite Database.
+
+PDF Download.
+
+Professional Dashboard.
+
+</p>
+
+<div class="mt-4">
+
+<a href="{{ url_for('invoice') }}"
+class="btn btn-primary btn-lg me-3">
+
+Generate Invoice
+
+</a>
+
+<a href="{{ url_for('result') }}"
+class="btn btn-success btn-lg">
+
+Generate Result
+
+</a>
+
+</div>
+
+</div>
+
+<div class="col-lg-6 text-center">
+
+<img src="{{ url_for('static',filename='images/dashboard.png') }}"
+class="img-fluid">
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

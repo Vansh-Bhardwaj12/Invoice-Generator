@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Invoice{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-warning text-dark">
+
+                    <h3>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        Edit Invoice
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Customer Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer"
+                                    value="{{ invoice.customer_name }}"
+                                    required>
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Phone Number
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="phone"
+                                    value="{{ invoice.phone }}"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Address
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                rows="3"
+                                name="address"
+                                required>{{ invoice.address }}</textarea>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Product
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="product"
+                                value="{{ invoice.product }}"
+                                required>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Quantity
+                                </label>
+
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="quantity"
+                                    value="{{ invoice.quantity }}"
+                                    required>
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    Price
+                                </label>
+
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="price"
+                                    value="{{ invoice.price }}"
+                                    required>
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label">
+                                    GST (%)
+                                </label>
+
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    name="gst"
+                                    value="{{ invoice.gst }}"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+                        <div class="text-center mt-4">
+
+                            <button
+                                type="submit"
+                                class="btn btn-warning btn-lg">
+
+                                <i class="fa-solid fa-floppy-disk"></i>
+
+                                Update Invoice
+
+                            </button>
+
+                            <a
+                                href="{{ url_for('invoice') }}"
+                                class="btn btn-secondary btn-lg">
+
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

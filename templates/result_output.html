@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Result</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container my-5">
+
+<div class="card shadow-lg p-5">
+
+<div class="text-center">
+
+<h2 class="text-success">
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+Student Result Report
+
+</h2>
+
+<p>
+
+Academic Session 2026
+
+</p>
+
+</div>
+
+<hr>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<h5>Student Information</h5>
+
+<p><strong>Name :</strong> {{ student }}</p>
+
+<p><strong>Roll No :</strong> {{ roll }}</p>
+
+</div>
+
+<div class="col-md-6 text-end">
+
+<h5>Status</h5>
+
+<h3 class="text-primary">
+
+{{ status }}
+
+</h3>
+
+</div>
+
+</div>
+
+<hr>
+
+<table class="table table-bordered">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Subject</th>
+
+<th>Marks</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>Mathematics</td>
+
+<td>{{ math }}</td>
+
+</tr>
+
+<tr>
+
+<td>Science</td>
+
+<td>{{ science }}</td>
+
+</tr>
+
+<tr>
+
+<td>English</td>
+
+<td>{{ english }}</td>
+
+</tr>
+
+<tr>
+
+<td>Computer</td>
+
+<td>{{ computer }}</td>
+
+</tr>
+
+<tr>
+
+<td>Hindi</td>
+
+<td>{{ hindi }}</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<div class="row mt-4">
+
+<div class="col-md-5 ms-auto">
+
+<table class="table">
+
+<tr>
+
+<th>Total Marks</th>
+
+<td>{{ total }}/500</td>
+
+</tr>
+
+<tr>
+
+<th>Percentage</th>
+
+<td>{{ percentage }}%</td>
+
+</tr>
+
+<tr>
+
+<th>Grade</th>
+
+<td>{{ grade }}</td>
+
+</tr>
+
+<tr class="table-success">
+
+<th>Result</th>
+
+<th>{{ status }}</th>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="text-center mt-4">
+
+<button onclick="window.print()"
+class="btn btn-success btn-lg me-3">
+
+<i class="fa-solid fa-print"></i>
+
+Print Result
+
+</button>
+
+<a href="/result"
+class="btn btn-primary btn-lg">
+
+Generate Another Result
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

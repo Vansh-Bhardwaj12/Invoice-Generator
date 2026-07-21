@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Invoice</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container my-5">
+
+<div class="card shadow-lg p-5">
+
+<!-- Header -->
+
+<div class="row">
+
+<div class="col-md-6">
+
+<h2 class="text-primary fw-bold">
+
+<i class="fa-solid fa-file-invoice"></i>
+
+InvoicePro
+
+</h2>
+
+<p>
+
+Professional Invoice Generator
+
+</p>
+
+</div>
+
+<div class="col-md-6 text-end">
+
+<h4>
+
+Invoice
+
+</h4>
+
+<p>
+
+<strong>Invoice No :</strong>
+
+{{ invoice_no }}
+
+</p>
+
+<p>
+
+<strong>Date :</strong>
+
+{{ date }}
+
+</p>
+
+</div>
+
+</div>
+
+<hr>
+
+<!-- Customer -->
+
+<h5 class="mb-3">
+
+Customer Details
+
+</h5>
+
+<p>
+
+<strong>Name :</strong>
+
+{{ customer }}
+
+</p>
+
+<hr>
+
+<!-- Product Table -->
+
+<table class="table table-bordered table-striped">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Product</th>
+
+<th>Quantity</th>
+
+<th>Price</th>
+
+<th>Subtotal</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>{{ product }}</td>
+
+<td>{{ quantity }}</td>
+
+<td>₹ {{ price }}</td>
+
+<td>₹ {{ subtotal }}</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<!-- Total -->
+
+<div class="row justify-content-end">
+
+<div class="col-md-5">
+
+<table class="table">
+
+<tr>
+
+<th>Subtotal</th>
+
+<td>₹ {{ subtotal }}</td>
+
+</tr>
+
+<tr>
+
+<th>GST ({{ gst }}%)</th>
+
+<td>₹ {{ gst_amount }}</td>
+
+</tr>
+
+<tr class="table-primary">
+
+<th>Total</th>
+
+<th>₹ {{ total }}</th>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- Buttons -->
+
+<div class="text-center mt-5">
+
+<button onclick="window.print()"
+class="btn btn-success btn-lg">
+
+<i class="fa-solid fa-print"></i>
+
+Print Invoice
+
+</button>
+
+<a href="/invoice"
+class="btn btn-primary btn-lg">
+
+Generate New Invoice
+
+</a>
+
+<a href="/"
+class="btn btn-dark btn-lg">
+
+Home
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

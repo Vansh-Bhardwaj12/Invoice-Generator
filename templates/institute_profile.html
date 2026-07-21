@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>
+                Institute Profile
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4 text-center">
+
+                    {% if institute.logo %}
+
+                    <img
+                        src="{{ url_for('static', filename='uploads/' + institute.logo) }}"
+                        class="img-thumbnail"
+                        style="width:200px;height:200px;object-fit:cover;">
+
+                    {% else %}
+
+                    <img
+                        src="{{ url_for('static', filename='images/school_logo.png') }}"
+                        class="img-thumbnail"
+                        style="width:200px;height:200px;object-fit:cover;">
+
+                    {% endif %}
+
+                    <form
+                        action="{{ url_for('upload_institute_logo') }}"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="mt-3">
+
+                        <input
+                            type="file"
+                            name="logo"
+                            class="form-control"
+                            required>
+
+                        <button
+                            class="btn btn-success w-100 mt-2">
+
+                            Upload Logo
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <div class="col-md-8">
+
+                    <form
+                        action="{{ url_for('update_institute_profile') }}"
+                        method="POST">
+
+                        <div class="mb-3">
+
+                            <label>
+
+                                Institute Name
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="institute_name"
+                                class="form-control"
+                                value="{{ institute.institute_name }}"
+                                required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+
+                                Address
+
+                            </label>
+
+                            <textarea
+                                name="address"
+                                class="form-control"
+                                rows="2">{{ institute.address }}</textarea>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <label>
+
+                                    Phone
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    class="form-control"
+                                    value="{{ institute.phone }}">
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label>
+
+                                    Email
+
+                                </label>
+
+                                <input
+                                    type="email"
+                                    name="email"
+                                    class="form-control"
+                                    value="{{ institute.email }}">
+
+                            </div>
+
+                        </div>
+
+                        <div class="mt-3">
+
+                            <label>
+
+                                Website
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="website"
+                                class="form-control"
+                                value="{{ institute.website }}">
+
+                        </div>
+
+                        <hr>
+
+                        <h5>
+
+                            Principal Information
+
+                        </h5>
+
+                        <div class="mb-3">
+
+                            <label>
+
+                                Principal Name
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="principal_name"
+                                class="form-control"
+                                value="{{ institute.principal_name }}">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+
+                                Class Teacher Name
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="class_teacher_name"
+                                class="form-control"
+                                value="{{ institute.class_teacher_name }}">
+
+                        </div>
+
+                        <button
+                            class="btn btn-primary btn-lg w-100">
+
+                            Save Institute Profile
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

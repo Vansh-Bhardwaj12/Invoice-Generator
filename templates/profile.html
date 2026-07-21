@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Company Profile{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h3 class="mb-0">
+                        <i class="fa-solid fa-building"></i>
+                        Company Profile
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="text-center mb-4">
+
+                        <img
+                            src="{{ url_for('static', filename='uploads/' + company.logo) }}"
+                            width="150"
+                            height="150"
+                            class="rounded-circle border border-3">
+
+                    </div>
+
+                    <form action="{{ url_for('update_profile') }}" method="POST">
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Company Name
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="company_name"
+                                value="{{ company.company_name }}"
+                                required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                value="{{ company.email or '' }}">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Phone
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="phone"
+                                value="{{ company.phone or '' }}">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Address
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                rows="3"
+                                name="address">{{ company.address or '' }}</textarea>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Website
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="website"
+                                value="{{ company.website or '' }}">
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            Save Company Profile
+
+                        </button>
+
+                    </form>
+
+                    <hr>
+
+                    <h5 class="mb-3">
+
+                        <i class="fa-solid fa-image"></i>
+
+                        Upload Company Logo
+
+                    </h5>
+
+                    <form
+                        action="{{ url_for('upload_logo') }}"
+                        method="POST"
+                        enctype="multipart/form-data">
+
+                        <div class="mb-3">
+
+                            <input
+                                type="file"
+                                name="logo"
+                                class="form-control"
+                                accept="image/*"
+                                required>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">
+
+                            <i class="fa-solid fa-upload"></i>
+
+                            Upload Logo
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

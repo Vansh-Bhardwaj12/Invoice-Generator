@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-warning text-dark">
+
+            <h3>
+
+                Edit Student Result
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <label>Student Name</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="student"
+                            value="{{ result.student_name }}"
+                            required>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label>Roll Number</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="roll"
+                            value="{{ result.roll_number }}"
+                            required>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label>Class</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="student_class"
+                            value="{{ result.student_class }}"
+                            required>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <table class="table table-bordered">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Subject</th>
+
+                            <th>Marks</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="subjectBody">
+
+                        {% for subject in result.subjects %}
+
+                        <tr>
+
+                            <td>
+
+                                <input
+                                    type="text"
+                                    name="subject[]"
+                                    class="form-control subject"
+                                    value="{{ subject.subject_name }}"
+                                    required>
+
+                            </td>
+
+                            <td>
+
+                                <input
+                                    type="number"
+                                    name="marks[]"
+                                    class="form-control marks"
+                                    value="{{ subject.marks }}"
+                                    min="0"
+                                    max="100"
+                                    required>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger removeRow">
+
+                                    Remove
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                <button
+                    type="button"
+                    id="addRow"
+                    class="btn btn-success">
+
+                    Add Subject
+
+                </button>
+
+                <hr>
+
+                <div class="row">
+
+                    <div class="col-md-3">
+
+                        <label>Total</label>
+
+                        <input
+                            type="text"
+                            id="totalMarks"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <label>Percentage</label>
+
+                        <input
+                            type="text"
+                            id="percentage"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <label>Grade</label>
+
+                        <input
+                            type="text"
+                            id="grade"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <label>Status</label>
+
+                        <input
+                            type="text"
+                            id="status"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn btn-primary btn-lg w-100 mt-4">
+
+                    Update Result
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function calculateResult(){
+
+    let total = 0;
+
+    let count = 0;
+
+    document.querySelectorAll(".marks").forEach(function(input){
+
+        let marks = parseFloat(input.value);
+
+        if(!isNaN(marks)){
+
+            total += marks;
+
+            count++;
+
+        }
+
+    });
+
+    let percentage = count > 0 ? total / count : 0;
+
+    document.getElementById("totalMarks").value =
+        total.toFixed(2);
+
+    document.getElementById("percentage").value =
+        percentage.toFixed(2) + "%";
+
+    let grade = "";
+    let status = "";
+
+    if(percentage >= 90){
+
+        grade = "A+";
+        status = "Pass";
+
+    }else if(percentage >= 80){
+
+        grade = "A";
+        status = "Pass";
+
+    }else if(percentage >= 70){
+
+        grade = "B";
+        status = "Pass";
+
+    }else if(percentage >= 60){
+
+        grade = "C";
+        status = "Pass";
+
+    }else if(percentage >= 40){
+
+        grade = "D";
+        status = "Pass";
+
+    }else{
+
+        grade = "F";
+        status = "Fail";
+
+    }
+
+    document.getElementById("grade").value = grade;
+    document.getElementById("status").value = status;
+
+}
+
+document.addEventListener("input", function(e){
+
+    if(e.target.classList.contains("marks")){
+
+        calculateResult();
+
+    }
+
+});
+
+document.getElementById("addRow").onclick = function(){
+
+    let tbody = document.getElementById("subjectBody");
+
+    let row = tbody.rows[0].cloneNode(true);
+
+    row.querySelector(".subject").value = "";
+
+    row.querySelector(".marks").value = "";
+
+    tbody.appendChild(row);
+
+};
+
+document.addEventListener("click", function(e){
+
+    if(e.target.classList.contains("removeRow")){
+
+        let tbody = document.getElementById("subjectBody");
+
+        if(tbody.rows.length > 1){
+
+            e.target.closest("tr").remove();
+
+            calculateResult();
+
+        }
+
+    }
+
+});
+
+calculateResult();
+
+</script>
+
+{% endblock %}

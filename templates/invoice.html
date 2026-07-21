@@ -1,0 +1,489 @@
+{% extends "base.html" %}
+
+{% block title %}Invoice Management{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- ========================= -->
+        <!-- CREATE INVOICE -->
+        <!-- ========================= -->
+
+        <div class="col-lg-7">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h4>
+
+                        <i class="fa-solid fa-file-invoice"></i>
+
+                        Create Professional Invoice
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form
+                        action="{{ url_for('add_invoice') }}"
+                        method="POST">
+
+                        <!-- Customer Information -->
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Customer Name
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="customer"
+                                    class="form-control"
+                                    required>
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Phone
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    class="form-control"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Address
+
+                            </label>
+
+                            <textarea
+                                name="address"
+                                class="form-control"
+                                rows="3"
+                                required></textarea>
+
+                        </div>
+
+                        <hr>
+
+                        <h5>
+
+                            Product Details
+
+                        </h5>
+
+                        <div class="table-responsive">
+
+                            <table
+                                class="table table-bordered"
+                                id="productTable">
+
+                                <thead class="table-dark">
+
+                                    <tr>
+
+                                        <th width="30%">Product</th>
+
+                                        <th width="10%">Qty</th>
+
+                                        <th width="15%">Price</th>
+
+                                        <th width="10%">GST %</th>
+
+                                        <th width="20%">Total</th>
+
+                                        <th width="15%">Action</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="productBody">
+
+                                    <tr>
+
+                                        <td>
+
+                                            <input
+                                                type="text"
+                                                class="form-control product"
+                                                name="product[]"
+                                                required>
+
+                                        </td>
+
+                                        <td>
+
+                                            <input
+                                                type="number"
+                                                class="form-control qty"
+                                                name="quantity[]"
+                                                value="1"
+                                                min="1"
+                                                required>
+
+                                        </td>
+
+                                        <td>
+
+                                            <input
+                                                type="number"
+                                                class="form-control price"
+                                                name="price[]"
+                                                value="0"
+                                                min="0"
+                                                required>
+
+                                        </td>
+
+                                        <td>
+
+                                            <input
+                                                type="number"
+                                                class="form-control gst"
+                                                name="gst[]"
+                                                value="18">
+
+                                        </td>
+
+                                        <td>
+
+                                            <input
+                                                type="text"
+                                                class="form-control total"
+                                                readonly>
+
+                                        </td>
+
+                                        <td>
+
+                                            <button
+                                                type="button"
+                                                class="btn btn-danger removeRow">
+
+                                                Remove
+
+                                            </button>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            id="addRow"
+                            class="btn btn-success">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add Product
+
+                        </button>
+
+                        <hr>
+                                                <div class="row mt-4">
+
+                            <div class="col-md-6">
+
+                                <h4>
+
+                                    Grand Total
+
+                                </h4>
+
+                            </div>
+
+                            <div class="col-md-6 text-end">
+
+                                <h3 class="text-success">
+
+                                    ₹ <span id="grandTotal">0.00</span>
+
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                        <input
+                            type="hidden"
+                            id="grand_total"
+                            name="grand_total">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-lg w-100 mt-3">
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            Save Invoice
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+<script>
+
+function calculateTotals(){
+
+    let grandTotal = 0;
+
+    document.querySelectorAll("#productBody tr").forEach(function(row){
+
+        let qty = parseFloat(
+            row.querySelector(".qty").value
+        ) || 0;
+
+        let price = parseFloat(
+            row.querySelector(".price").value
+        ) || 0;
+
+        let gst = parseFloat(
+            row.querySelector(".gst").value
+        ) || 0;
+
+        let subtotal = qty * price;
+
+        let total = subtotal + (subtotal * gst / 100);
+
+        row.querySelector(".total").value = total.toFixed(2);
+
+        grandTotal += total;
+
+    });
+
+    document.getElementById("grandTotal").innerHTML =
+        grandTotal.toFixed(2);
+
+    document.getElementById("grand_total").value =
+        grandTotal.toFixed(2);
+
+}
+
+document.addEventListener("input", function(e){
+
+    if(
+
+        e.target.classList.contains("qty") ||
+
+        e.target.classList.contains("price") ||
+
+        e.target.classList.contains("gst")
+
+    ){
+
+        calculateTotals();
+
+    }
+
+});
+
+document.getElementById("addRow").addEventListener("click", function(){
+
+    let tbody = document.getElementById("productBody");
+
+    let row = tbody.rows[0].cloneNode(true);
+
+    row.querySelector(".product").value = "";
+
+    row.querySelector(".qty").value = 1;
+
+    row.querySelector(".price").value = 0;
+
+    row.querySelector(".gst").value = 18;
+
+    row.querySelector(".total").value = "";
+
+    tbody.appendChild(row);
+
+});
+
+document.addEventListener("click", function(e){
+
+    if(e.target.classList.contains("removeRow")){
+
+        let tbody = document.getElementById("productBody");
+
+        if(tbody.rows.length > 1){
+
+            e.target.closest("tr").remove();
+
+            calculateTotals();
+
+        }
+
+    }
+
+});
+
+calculateTotals();
+
+</script>
+        <!-- ========================= -->
+        <!-- INVOICE LIST -->
+        <!-- ========================= -->
+
+        <div class="col-lg-5">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-success text-white">
+
+                    <h4>
+
+                        <i class="fa-solid fa-list"></i>
+
+                        Invoice List
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered table-hover">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>Customer</th>
+
+                                <th>Total</th>
+
+                                <th>Action</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for invoice in invoices %}
+
+                            <tr>
+
+                                <td>
+
+                                    {{ invoice.id }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ invoice.customer_name }}
+
+                                </td>
+
+                                <td>
+
+                                    ₹ {{ "%.2f"|format(invoice.grand_total) }}
+
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="{{ url_for('edit_invoice', id=invoice.id) }}"
+                                        class="btn btn-warning btn-sm">
+
+                                        Edit
+
+                                    </a>
+
+                                    <a
+                                        href="{{ url_for('invoice_pdf', id=invoice.id) }}"
+                                        class="btn btn-success btn-sm">
+
+                                        PDF
+
+                                    </a>
+
+                                    <a
+                                        href="{{ url_for('print_invoice', id=invoice.id) }}"
+                                        class="btn btn-info btn-sm">
+
+                                        Print
+
+                                    </a>
+
+                                    <a
+                                        href="{{ url_for('delete_invoice', id=invoice.id) }}"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Delete this invoice?')">
+
+                                        Delete
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% else %}
+
+                            <tr>
+
+                                <td colspan="4" class="text-center">
+
+                                    No invoices found.
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+
+        History
+
+    </h2>
+
+    <!-- Invoice History -->
+
+    <div class="card shadow mb-5">
+
+        <div class="card-header bg-primary text-white">
+
+            <h4>
+
+                Invoice History
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Customer</th>
+
+                        <th>Phone</th>
+
+                        <th>Total</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for invoice in invoices %}
+
+                    <tr>
+
+                        <td>
+
+                            INV-{{ "%04d"|format(invoice.id) }}
+
+                        </td>
+
+                        <td>
+
+                            {{ invoice.customer_name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ invoice.phone }}
+
+                        </td>
+
+                        <td>
+
+                            ₹ {{ "%.2f"|format(invoice.grand_total) }}
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{{ url_for('invoice_pdf', id=invoice.id) }}"
+                                class="btn btn-success btn-sm">
+
+                                PDF
+
+                            </a>
+
+                            <a
+                                href="{{ url_for('print_invoice', id=invoice.id) }}"
+                                class="btn btn-primary btn-sm">
+
+                                Print
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="5" class="text-center">
+
+                            No Invoice Found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- Result History -->
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+
+            <h4>
+
+                Result History
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Student</th>
+
+                        <th>Roll No.</th>
+
+                        <th>Percentage</th>
+
+                        <th>Grade</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for result in results %}
+
+                    <tr>
+
+                        <td>{{ result.id }}</td>
+
+                        <td>{{ result.student_name }}</td>
+
+                        <td>{{ result.roll_number }}</td>
+
+                        <td>{{ "%.2f"|format(result.percentage) }}%</td>
+
+                        <td>{{ result.grade }}</td>
+
+                        <td>{{ result.status }}</td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="6" class="text-center">
+
+                            No Result Found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

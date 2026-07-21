@@ -1,0 +1,798 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Dashboard Heading -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-12">
+
+            <div class="card shadow-lg border-0 bg-primary text-white">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h2 class="fw-bold">
+
+                                <i class="fa-solid fa-gauge-high"></i>
+
+                                Dashboard
+
+                            </h2>
+
+                            <p class="mb-0">
+
+                                Welcome to Invoice & Result Management System
+
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fa-solid fa-chart-line fa-4x opacity-50"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="row">
+
+        <!-- Invoice -->
+
+        <div class="col-lg-3 col-md-6 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Total Invoices
+
+                            </h6>
+
+                            <h2 class="fw-bold">
+
+                                {{ invoice_count }}
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fa-solid fa-file-invoice fa-3x text-primary"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Result -->
+
+        <div class="col-lg-3 col-md-6 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Total Results
+
+                            </h6>
+
+                            <h2 class="fw-bold">
+
+                                {{ result_count }}
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fa-solid fa-graduation-cap fa-3x text-success"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Users -->
+
+        <div class="col-lg-3 col-md-6 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Total Users
+
+                            </h6>
+
+                            <h2 class="fw-bold">
+
+                                {{ users }}
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fa-solid fa-users fa-3x text-warning"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Revenue -->
+
+        <div class="col-lg-3 col-md-6 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Revenue
+
+                            </h6>
+
+                            <h2 class="fw-bold">
+
+                                ₹{{ "%.2f"|format(total_amount) }}
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fa-solid fa-indian-rupee-sign fa-3x text-danger"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+
+    <div class="row">
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h5 class="mb-0">
+
+                        Quick Actions
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <a href="{{ url_for('invoice') }}" class="btn btn-primary w-100 mb-3">
+
+                        <i class="fa-solid fa-file-invoice"></i>
+
+                        Generate Invoice
+
+                    </a>
+
+                    <a href="{{ url_for('result') }}" class="btn btn-success w-100 mb-3">
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                        Generate Result
+
+                    </a>
+
+                    <a href="{{ url_for('history') }}" class="btn btn-dark w-100">
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                        View History
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Project Features -->
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-success text-white">
+
+                    <h5 class="mb-0">
+
+                        <i class="fa-solid fa-star"></i>
+
+                        Project Features
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">✅ Professional Invoice Generator</li>
+
+                        <li class="list-group-item">✅ Student Result Generator</li>
+
+                        <li class="list-group-item">✅ Company Profile Management</li>
+
+                        <li class="list-group-item">✅ Institute Profile Management</li>
+
+                        <li class="list-group-item">✅ Multi User Login System</li>
+
+                        <li class="list-group-item">✅ PDF Generation</li>
+
+                        <li class="list-group-item">✅ History Management</li>
+
+                        <li class="list-group-item">✅ SQLite Database</li>
+
+                        <li class="list-group-item">✅ Flask + Bootstrap 5</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+        <!-- Dashboard Analytics -->
+
+    <div class="row">
+
+        <div class="col-lg-8 mb-4">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-info text-white">
+
+                    <h5 class="mb-0">
+
+                        <i class="fa-solid fa-chart-column"></i>
+
+                        Dashboard Analytics
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="dashboardChart" height="120"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Quick Statistics -->
+
+        <div class="col-lg-4 mb-4">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-dark text-white">
+
+                    <h5 class="mb-0">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                        Quick Statistics
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="mb-4">
+
+                        <h6 class="text-muted">
+
+                            Total Invoices
+
+                        </h6>
+
+                        <h3 class="text-primary fw-bold">
+
+                            {{ invoice_count }}
+
+                        </h3>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="mb-4">
+
+                        <h6 class="text-muted">
+
+                            Total Results
+
+                        </h6>
+
+                        <h3 class="text-success fw-bold">
+
+                            {{ result_count }}
+
+                        </h3>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="mb-4">
+
+                        <h6 class="text-muted">
+
+                            Total Users
+
+                        </h6>
+
+                        <h3 class="text-warning fw-bold">
+
+                            {{ users }}
+
+                        </h3>
+
+                    </div>
+
+                    <hr>
+
+                    <div>
+
+                        <h6 class="text-muted">
+
+                            Total Revenue
+
+                        </h6>
+
+                        <h3 class="text-danger fw-bold">
+
+                            ₹{{ "%.2f"|format(total_amount) }}
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+        <!-- ========================= -->
+    <!-- Recent Activity -->
+    <!-- ========================= -->
+
+    <div class="row">
+
+        <div class="col-12 mb-4">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-secondary text-white">
+
+                    <h5 class="mb-0">
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                        Recent Activity
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-hover table-bordered align-middle">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>ID</th>
+                                <th>Module</th>
+                                <th>Status</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>1</td>
+
+                                <td>Invoice Generator</td>
+
+                                <td>
+
+                                    <span class="badge bg-success">
+
+                                        Active
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>2</td>
+
+                                <td>Result Generator</td>
+
+                                <td>
+
+                                    <span class="badge bg-success">
+
+                                        Active
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>3</td>
+
+                                <td>Company Profile</td>
+
+                                <td>
+
+                                    <span class="badge bg-primary">
+
+                                        Ready
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>4</td>
+
+                                <td>Institute Profile</td>
+
+                                <td>
+
+                                    <span class="badge bg-primary">
+
+                                        Ready
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>5</td>
+
+                                <td>Database</td>
+
+                                <td>
+
+                                    <span class="badge bg-success">
+
+                                        Connected
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- System Information -->
+    <!-- ========================= -->
+
+    <div class="row">
+
+        <!-- Database -->
+
+        <div class="col-lg-4 mb-4">
+
+            <a href="{{ url_for('history') }}"
+               class="text-decoration-none text-dark">
+
+                <div class="card shadow border-0 h-100">
+
+                    <div class="card-body text-center">
+
+                        <i class="fa-solid fa-database fa-3x text-primary mb-3"></i>
+
+                        <h4>Database</h4>
+
+                        <p>Click to View History</p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- PDF -->
+
+        <div class="col-lg-4 mb-4">
+
+            <a href="{{ url_for('result') }}"
+               class="text-decoration-none text-dark">
+
+                <div class="card shadow border-0 h-100">
+
+                    <div class="card-body text-center">
+
+                        <i class="fa-solid fa-file-pdf fa-3x text-danger mb-3"></i>
+
+                        <h4>PDF Reports</h4>
+
+                        <p>Generate Student Results</p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- Contact -->
+
+        <div class="col-lg-4 mb-4">
+
+            <a href="{{ url_for('contact') }}"
+               class="text-decoration-none text-dark">
+
+                <div class="card shadow border-0 h-100">
+
+                    <div class="card-body text-center">
+
+                        <i class="fa-solid fa-cloud fa-3x text-success mb-3"></i>
+
+                        <h4>Deployment</h4>
+
+                        <p>Open Contact Page</p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+    </div>
+
+<!-- ========================= -->
+<!-- Chart.js -->
+<!-- ========================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const canvas = document.getElementById("dashboardChart");
+
+if (canvas) {
+
+    new Chart(canvas, {
+
+        type: "bar",
+
+        data: {
+
+            labels: [
+                "Invoices",
+                "Results",
+                "Revenue"
+            ],
+
+            datasets: [{
+
+                label: "Dashboard Statistics",
+
+                data: [
+                    {{ invoice_count }},
+                    {{ result_count }},
+                    {{ total_amount }}
+                ],
+
+                backgroundColor: [
+                    "#0d6efd",
+                    "#198754",
+                    "#dc3545"
+                ],
+
+                borderColor: [
+                    "#0d6efd",
+                    "#198754",
+                    "#dc3545"
+                ],
+
+                borderWidth: 2,
+
+                borderRadius: 8
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    display: false
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+</script>
+
+<style>
+
+.card{
+    transition:0.3s ease;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 12px 25px rgba(0,0,0,.18);
+}
+
+.btn{
+    transition:.3s ease;
+}
+
+.btn:hover{
+    transform:scale(1.03);
+}
+
+.table tbody tr:hover{
+    background:#f8f9fa;
+}
+
+.card-header{
+    font-weight:600;
+}
+
+.list-group-item{
+    border:0;
+}
+
+canvas{
+    max-height:350px;
+}
+
+</style>
+
+{% endblock %}
